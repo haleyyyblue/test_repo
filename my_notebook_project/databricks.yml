@@ -1,0 +1,29 @@
+# This is a Databricks asset bundle definition for my_notebook_project.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: my_notebook_project
+  uuid: 181ad57e-7a54-4fa8-8a06-4d2412c11397
+
+include:
+  - resources/*.yml
+
+targets:
+  dev:
+    # The default target uses 'mode: development' to create a development copy.
+    # - Deployed resources get prefixed with '[dev my_user_name]'
+    # - Any job schedules and triggers are paused by default.
+    # See also https://docs.databricks.com/dev-tools/bundles/deployment-modes.html.
+    mode: development
+    default: true
+    workspace:
+      host: https://adb-2327188304159100.0.azuredatabricks.net
+
+  prod:
+    mode: production
+    workspace:
+      host: https://adb-767986322573990.10.azuredatabricks.net
+      # We explicitly deploy to /Workspace/Users/haekyung.won@databricks.com to make sure we only have a single copy.
+      root_path: /Workspace/Users/haekyung.won@databricks.com/.bundle/${bundle.name}/${bundle.target}
+    permissions:
+      - user_name: haekyung.won@databricks.com
+        level: CAN_MANAGE
